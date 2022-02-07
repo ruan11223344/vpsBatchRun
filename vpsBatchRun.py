@@ -31,7 +31,7 @@ elif __file__:
 if application_path == '':
     application_path = os.getcwd()
 
-def async(f):
+def asyncFunc(f):
     def wrapper(*args, **kwargs):
         thr = Thread(target=f, args=args, kwargs=kwargs)
         thr.start()
@@ -147,7 +147,7 @@ def stopProcess(ip):
     print(result.decode())
     print('执行杀死进程成功')
 
-@async
+@asyncFunc
 def stopDelAsync(ip):
     if ip not in sshDict:
         ssh = getssh(ip)
@@ -160,7 +160,7 @@ def stopDelAsync(ip):
     delServerDir(ip)
 
 
-@async
+@asyncFunc
 def runAsync(ssh,ip):
     execPath = getUploadPath()
     print('\r\n开始执行运行脚本命令:')
@@ -202,7 +202,7 @@ def uploadConf(ip):
     toFilePath = '{execPath}/{confPath}'.format(execPath=getUploadPath(),confPath=curFile)
     uploadFile(ip, transportDict[ip], fullConfPath, toFilePath)
 
-@async
+@asyncFunc
 def downloadExecAndRun(ip):
     urlDict = getExecDownloadUrl()
     print('开始下载执行目录')
@@ -227,7 +227,7 @@ def execCommand(ip,ssh,command):
         print('服务器IP:' + ip)
         print(result)
 
-@async
+@asyncFunc
 def fetchLogAndConfAsynctoLocal(ip):
     if ip not in sshDict:
         ssh = getssh(ip)
@@ -296,7 +296,7 @@ def fetchLogAndConfAsynctoLocal(ip):
             os.makedirs(path)
         downloadFile(ip, transport, logRealPath, downloadLogPath)
 
-@async
+@asyncFunc
 def fetchLogAndConfAsynctoOss(ip):
     if ip not in sshDict:
         ssh = getssh(ip)
@@ -363,7 +363,7 @@ def uploadFileToOssByUrl(ossPath,ip,serverFilePath):
     execCommand(ip, sshDict[ip], command)
     return True
 
-@async
+@asyncFunc
 def execAsync(ip,command):
     if ip not in sshDict:
         ssh = getssh(ip)
@@ -430,7 +430,7 @@ def getExecDownloadUrl():
     urlDict['name'] = zipName
     return urlDict
 
-@async
+@asyncFunc
 def runExecAsync(ip):
     if ip not in sshDict:
         ssh = getssh(ip)
